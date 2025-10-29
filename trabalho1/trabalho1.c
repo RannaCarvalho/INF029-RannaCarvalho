@@ -89,9 +89,212 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
+
+typedef struct DQ
+{
+    int iDia;
+    int iMes;
+    int iAno;
+    int valido; // 0 se inválido, e 1 se válido
+} DataQuebrada;
+
+typedef struct Qtd
+{
+    int qtdDias;
+    int qtdMeses;
+    int qtdAnos;
+    int retorno;
+} DiasMesesAnos;
+
 int q1(char data[])
 {
-  int datavalida = 1;
+    int i = 0, j = 0;
+    int dia = 0, mes = 0, ano = 0;
+    char iDia[3] = "", iMes[3] = "", iAno[5] = "";
+
+    while (data[i] != '/' && data[i] != '\0') {
+        if (j >= 2) return 0; 
+        iDia[j++] = data[i++];
+    }
+    iDia[j] = '\0';
+    if (data[i] == '\0') return 0;
+    i++;
+
+    j = 0;
+    while (data[i] != '/' && data[i] != '\0') {
+        if (j >= 2) return 0;
+        iMes[j++] = data[i++];
+    }
+    iMes[j] = '\0';
+    if (data[i] == '\0') return 0;
+    i++;
+
+    j = 0;
+    while (data[i] != '\0') {
+        if (j >= 4) return 0;
+        iAno[j++] = data[i++];
+    }
+    iAno[j] = '\0';
+
+    dia = 0;
+    for (i = 0; iDia[i] != '\0'; i++) {
+        if (iDia[i] < '0' || iDia[i] > '9') return 0;
+        dia = dia * 10 + (iDia[i] - '0');
+    }
+
+    mes = 0;
+    for (i = 0; iMes[i] != '\0'; i++) {
+        if (iMes[i] < '0' || iMes[i] > '9') return 0;
+        mes = mes * 10 + (iMes[i] - '0');
+    }
+
+    ano = 0;
+    for (i = 0; iAno[i] != '\0'; i++) {
+        if (iAno[i] < '0' || iAno[i] > '9') return 0;
+        ano = ano * 10 + (iAno[i] - '0');
+    }
+
+    if (strlen(iAno) == 2) {
+        ano += 2000; // ex: 23 -> 2023
+    }
+
+    if (mes < 1 || mes > 12) return 0;
+    if (dia < 1) return 0;
+
+    int diasNoMes;
+    switch (mes) {
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+            diasNoMes = 31; break;
+        case 4: case 6: case 9: case 11:
+            diasNoMes = 30; break;
+        case 2:
+            if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0))
+                diasNoMes = 29;
+            else
+                diasNoMes = 28;
+            break;
+        default:
+            return 0;
+    }
+
+    if (dia > diasNoMes) return 0;
+
+    return 1;
+}
+
+DataQuebrada quebraData(char data[])
+{
+    DataQuebrada dq = {0,0,0,0};
+
+    if (!q1(data)) return dq;
+
+    int i = 0, j = 0;
+    char iDia[3] = "", iMes[3] = "", iAno[5] = "";
+
+    while (data[i] != '/' && data[i] != '\0') iDia[j++] = data[i++]; iDia[j] = '\0'; i++;
+    j = 0;
+    while (data[i] != '/' && data[i] != '\0') iMes[j++] = data[i++]; iMes[j] = '\0'; i++;
+    j = 0;
+    while (data[i] != '\0') iAno[j++] = data[i++]; iAno[j] = '\0';
+
+    /* conversão manual (já validado por q1) */
+    int dia = 0, mes = 0, ano = 0;
+    for (i = 0; iDia[i] != '\0'; i++) dia = dia * 10 + (iDia[i] - '0');
+    for (i = 0; iMes[i] != '\0'; i++) mes = mes * 10 + (iMes[i] - '0');
+    for (i = 0; iAno[i] != '\0'; i++) ano = ano * 10 + (iAno[i] - '0');
+
+    if (strlen(iAno) == 2) ano += 2000;
+
+    dq.iDia = dia;
+    dq.iMes = mes;
+    dq.iAno = ano;
+    dq.valido = 1;
+    return dq;
+}
+
+DiasMesesAnos q2(char datainicial[], char datafinal[])
+{
+    DiasMesesAnos dma = {0,0,0,0};
+
+    /* validações iniciais */
+    if (q1(datainicial) == 0) {
+        dma.retorno = 2;
+        return dma;
+    }
+    if (q1(datafinal) == 0) {
+        dma.retorno = 3;
+        return dma;
+    }
+
+    DataQuebrada inicial = quebraData(datainicial);
+    DataQuebrada final = quebraData(datafinal);
+
+    if (final.iAno < inicial.iAno) {
+        dma.retorno = 4;
+        return dma;
+    } else if ((final.iAno == inicial.iAno) && (inicial.iMes > final.iMes)) {
+        dma.retorno = 4;
+        return dma;
+    } else if ((final.iAno == inicial.iAno) && (inicial.iMes == final.iMes) && (final.iDia < inicial.iDia)) {
+        dma.retorno = 4;
+        return dma;
+    }
+
+    dma.qtdAnos = final.iAno - inicial.iAno;
+    dma.qtdMeses = final.iMes - inicial.iMes;
+    dma.qtdDias = final.iDia - inicial.iDia;
+
+    if (dma.qtdDias < 0) {
+        dma.qtdDias += 30; 
+        dma.qtdMeses--;
+    }
+
+    if (dma.qtdMeses < 0) {
+        dma.qtdMeses += 12;
+        dma.qtdAnos--;
+    }
+
+    dma.retorno = 1;
+    return dma;
+}
+
+int main() {
+    char data[20];
+    printf("Digite uma data (dd/mm/aaaa): ");
+    if (scanf("%19s", data) != 1) return 0;
+
+    if (q1(data))
+        printf("\nData válida\n");
+    else
+        printf("\nData inválida\n");
+
+    char datainicial[20], datafinal[20];
+    printf("\n");
+    printf("Digite a data inicial (dd/mm/aaaa): ");
+    if (scanf("%19s", datainicial) != 1) return 0;
+    printf("Digite a data final (dd/mm/aaaa): ");
+    if (scanf("%19s", datafinal) != 1) return 0;
+
+    DiasMesesAnos resposta = q2(datainicial, datafinal);
+
+    switch (resposta.retorno) {
+        case 1:
+            printf("\nCálculo realizado com sucesso!\n");
+            printf("Diferença: %d ano(s), %d mês(es) e %d dia(s)\n",
+                   resposta.qtdAnos, resposta.qtdMeses, resposta.qtdDias);
+            break;
+        case 2:
+            printf("\nData inicial inválida!\n"); break;
+        case 3:
+            printf("\nData final inválida!\n"); break;
+        case 4:
+            printf("\nData inicial maior que a final!\n"); break;
+        default:
+            printf("\nErro desconhecido.\n");
+    }
+
+    return 0;
+}
 
   //quebrar a string data em strings sDia, sMes, sAno
 
