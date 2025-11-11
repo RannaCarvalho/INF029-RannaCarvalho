@@ -440,6 +440,72 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     return qtdOcorrencias;
 }
 
+#include <stdio.h>
+#include <string.h>
+
+int q4(char *strTexto, char *strBusca, int posicoes[30])
+{
+    int qtdOcorrencias = 0;
+    int i, j, k = 0;
+    int lenTexto = strlen(strTexto);
+    int lenBusca = strlen(strBusca);
+
+    // percorre o texto até onde a palavra cabe
+    for (i = 0; i <= lenTexto - lenBusca; i++) {
+        int achou = 1;
+
+        for (j = 0; j < lenBusca; j++) {
+            if (strTexto[i + j] != strBusca[j]) {
+                achou = 0;
+                break;
+            }
+        }
+
+        if (achou) {
+            posicoes[k++] = i;               // posição inicial
+            posicoes[k++] = i + lenBusca - 1; // posição final
+            qtdOcorrencias++;
+        }
+    }
+
+    return qtdOcorrencias;
+}
+
+int main()
+{
+    char strTexto[30];
+    char strBusca[30];
+    int posicoes[30];
+    int i, j, k = 0;
+    int qtdOcorrencias = -1;
+    int resultado;
+    int posicao_ini, posicao_fim;
+
+    printf("Digite um texto: \n");
+    fgets(strTexto, sizeof(strTexto), stdin);
+    strTexto[strcspn(strTexto, "\n")] = '\0'; // remove o '\n'
+
+    printf("Digite uma palavra a ser buscada: \n");
+    fgets(strBusca, sizeof(strBusca), stdin);
+    strBusca[strcspn(strBusca, "\n")] = '\0'; // remove o '\n'
+
+    resultado = q4(strTexto, strBusca, posicoes);
+
+    if (resultado <= 0) {
+        printf("A palavra buscada nao foi encontrada no texto.\n");
+    } else {
+        printf("A palavra buscada aparece %d vez(es) no texto.\n", resultado);
+        printf("Posicoes iniciais/finais:\n");
+        for (i = 0; i < resultado; i++) {
+            posicao_ini = posicoes[2 * i];
+            posicao_fim = posicoes[2 * i + 1];
+            printf("Ocorrencia %d: %d/%d\n", i + 1, posicao_ini, posicao_fim);
+        }
+    }
+
+    return 0;
+}
+
 /*
  Q5 = inverte número
  @objetivo
