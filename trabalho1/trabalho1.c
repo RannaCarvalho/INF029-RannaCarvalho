@@ -562,6 +562,39 @@ int q6(int numerobase, int numerobusca)
     int qtdOcorrencias;
     return qtdOcorrencias;
 }
+#include <stdio.h>
+
+int q6(int numerobase, int numerobusca)
+{
+    int qtdOcorrencias=0;
+    
+    while (numerobase>0){
+        int num = numerobase%10;
+        numerobase/=10;
+        if(numerobusca==num){
+            qtdOcorrencias++;
+        }
+    }
+    return qtdOcorrencias;
+}
+
+int main()
+{
+    int num, numerobusca, numerobase;
+    int qtdOcorrencias, resultado;
+    
+    printf("Digite um numero inteiro: \n");
+    scanf("%d", &numerobase);
+    
+    printf("\nDigite um numero a ser buscado dentro do numero anterior: \n");
+    scanf("%d", &numerobusca);
+    
+    resultado= q6(numerobase, numerobusca);
+    
+    printf("\no numero %d foi encontrado %d vezes.", numerobusca, resultado);
+
+    return 0;
+}
 
 /*
  Q7 = jogo busca palavras
