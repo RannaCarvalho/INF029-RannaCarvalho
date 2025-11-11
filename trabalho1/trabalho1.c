@@ -366,6 +366,58 @@ int q3(char *texto, char c, int isCaseSensitive)
     return qtdOcorrencias;
 }
 
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#define TAM 200
+
+int q3(char *texto, char c, int isCaseSensitive)
+{
+    int qtdOcorrencias = 0;
+    int i;
+
+    for (i = 0; texto[i] != '\0'; i++)
+    {
+        if (isCaseSensitive==1)
+        {
+            if (texto[i] == c)
+                qtdOcorrencias++;
+        }
+        else
+        {
+            if (tolower(texto[i]) == tolower(c))
+                qtdOcorrencias++;
+        }
+    }
+
+    return qtdOcorrencias;
+}
+
+int main()
+{
+    char texto[TAM];
+    char caractere;
+    int isCaseSensitive;
+    int resultado;
+
+    printf("Digite um texto: ");
+    fgets(texto, TAM, stdin);
+    texto[strcspn(texto, "\n")] = '\0'; 
+
+    printf("Digite o caractere a ser contado: ");
+    scanf(" %c", &caractere);
+
+    printf("Diferenciar maiúsculas e minúsculas? (1 = sim, 0 = não): ");
+    scanf("%d", &isCaseSensitive);
+
+    resultado = q3(texto, caractere, isCaseSensitive);
+
+    printf("\nO caractere '%c' aparece %d vezes no texto.\n", caractere, resultado);
+
+    return 0;
+}
+
+
 /*
  Q4 = encontrar palavra em texto
  @objetivo
