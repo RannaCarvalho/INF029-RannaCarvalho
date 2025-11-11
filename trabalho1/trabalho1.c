@@ -521,6 +521,31 @@ int q5(int num)
 
     return num;
 }
+#include <stdio.h>
+
+int q5(int num)
+{
+    int invertido=0;
+ 
+    while (num>0){
+        invertido= invertido * 10 +(num%10);
+        num/=10;
+    }
+    
+    return invertido;
+}
+int main()
+{
+    int invertido, num, resultado;
+    printf ("Digite o número a ser invertido: \n");
+    scanf ("%d", &num);
+    
+    printf("\n");
+    resultado = q5(num);
+    printf("Número invertido: %d\n", resultado);
+
+    return 0;
+}
 
 /*
  Q6 = ocorrência de um número em outro
