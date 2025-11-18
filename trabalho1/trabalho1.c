@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "trabalho1.h" 
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebraData(char data[]);
 
@@ -44,30 +45,42 @@ int somar(int x, int y)
     return soma;
 }
 
-/*
-## função utilizada para testes  ##
+int main()
+{
+    int x, y, resultado;
 
- fatorial = fatorial de um número
-@objetivo
-    calcular o fatorial de um número
-@entrada
-    um inteiro x
-@saida
-    fatorial de x -> x!
- */
-int fatorial(int x)
-{ //função utilizada para testes
-  int i, fat = 1;
-    
-  for (i = x; i > 1; i--)
-    fat = fat * i;
-    
-  return fat;
+    printf("Digite o primeiro valor: ");
+    scanf("%d", &x);
+
+    printf("Digite o segundo valor: ");
+    scanf("%d", &y);
+
+    resultado = somar(x, y);
+
+    printf("\nResultado da soma: %d\n", resultado);
+
+    return 0;
 }
 
+/*
+int fatorial(int x)
+{
+    int i, fat = 1;
+
+    for (i = x; i > 1; i--)
+        fat = fat * i;
+
+    return fat;
+}
+
+/*  Função simples usada para testes
+    Se a = 2, retorna 3
+    Caso contrário, retorna 4
+*/
 int teste(int a)
 {
     int val;
+
     if (a == 2)
         val = 3;
     else
@@ -76,6 +89,20 @@ int teste(int a)
     return val;
 }
 
+int main()
+{
+    int num;
+
+    printf("Digite um número para calcular o fatorial: ");
+    scanf("%d", &num);
+
+    printf("Fatorial de %d = %d\n", num, fatorial(num));
+
+    printf("\nTeste(2) = %d\n", teste(2));
+    printf("Teste(5) = %d\n", teste(5));
+
+    return 0;
+}
 /*
  Q1 = validar data
 @objetivo
@@ -88,6 +115,23 @@ int teste(int a)
  @restrições
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
+ */
+
+
+
+/*
+ Q2 = diferença entre duas datas
+ @objetivo
+    Calcular a diferença em anos, meses e dias entre duas datas
+ @entrada
+    uma string datainicial, uma string datafinal. 
+ @saida
+    Retorna um tipo DiasMesesAnos. No atributo retorno, deve ter os possíveis valores abaixo
+    1 -> cálculo de diferença realizado com sucesso
+    2 -> datainicial inválida
+    3 -> datafinal inválida
+    4 -> datainicial > datafinal
+    Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
 
 typedef struct DQ
@@ -310,46 +354,6 @@ int main() {
 
 
 /*
- Q2 = diferença entre duas datas
- @objetivo
-    Calcular a diferença em anos, meses e dias entre duas datas
- @entrada
-    uma string datainicial, uma string datafinal. 
- @saida
-    Retorna um tipo DiasMesesAnos. No atributo retorno, deve ter os possíveis valores abaixo
-    1 -> cálculo de diferença realizado com sucesso
-    2 -> datainicial inválida
-    3 -> datafinal inválida
-    4 -> datainicial > datafinal
-    Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
- */
-DiasMesesAnos q2(char datainicial[], char datafinal[])
-{
-
-    //calcule os dados e armazene nas três variáveis a seguir
-    DiasMesesAnos dma;
-
-    if (q1(datainicial) == 0){
-      dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 3;
-      return dma;
-    }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
-
-
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
-    }
-    
-}
-
-/*
  Q3 = encontrar caracter em texto
  @objetivo
     Pesquisar quantas vezes um determinado caracter ocorre em um texto
@@ -359,15 +363,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @saida
     Um número n >= 0.
  */
-int q3(char *texto, char c, int isCaseSensitive)
-{
-    int qtdOcorrencias = -1;
 
-    return qtdOcorrencias;
-}
-
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
 #define TAM 200
 
@@ -433,15 +429,6 @@ int main()
         O retorno da função, n, nesse caso seria 1;
 
  */
-int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
-    int qtdOcorrencias = -1;
-
-    return qtdOcorrencias;
-}
-
-#include <stdio.h>
-#include <string.h>
 
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
@@ -608,9 +595,69 @@ int main()
 
  int q7(char matriz[8][10], char palavra[5])
  {
-     int achou;
+    int achou = 0;
+    int i, j, k, tam_p;
+    char invertido[5];
+    for (tam_p = 0; palavra[tam_p]; tam_p++);
+    for (i = tam_p - 1, j = 0; i >= 0; i--, j++) {
+        invertido[j] = palavra[i];
+    }
+    // sentido horizontal para frente e para trás
+    for (i = 0; i < 8 && !achou; i++) {
+        for (j = 0; j < 10 - tam_p + 1 && !achou; j++) {
+            for (k = 0; k < tam_p; k++) {
+                if (matriz[i][j + k] != palavra[k] && matriz[i][j + k] != invertido[k]) {
+                    break;
+                }
+            }
+            if (k == tam_p)
+                achou = 1;
+        }
+    }
+    // sentido vertical para cima e para baixo
+    for (i = 0; i < 10 - tam_p + 1 && !achou; i++) {
+        for (j = 0; j < 8 && !achou; j++) {
+            for (k = 0; k < tam_p; k++) {
+                if (matriz[j + k][i] != palavra[k] && matriz[j + k][i] != invertido[k]) {
+                    break;
+                }
+            }
+            if (k == tam_p)
+                achou = 1;
+        }
+    }
+    // diagonal
+    for (int l = 0; l < 8; l++) {
+        for (int c = 0; c < 10; c++) {
+            for (i = l; i < 8 && !achou; i++) {
+                for (j = c; j < 10 && !achou; j++) {
+                    for (k = 0; k < tam_p && j + k < 10; k++) {
+                        if (matriz[i + k][j + k] != palavra[k] && matriz[i + k][j + k] != invertido[k])
+                            break;
+                    }
+                    if (k == tam_p)
+                        achou = 1;
+                }
+            }
+        }
+    }
+    for (int l = 0; l < 8 && !achou; l++) {
+        for (int c = 10 - 1; c >= 0 && !achou; c--) {
+            for (i = l; i < 8 && !achou; i++) {
+                for (j = c; j >= 0 && !achou; j--) {
+                    for (k = 0; k < tam_p; k++) {
+                        if (matriz[i + k][j - k] != palavra[k] && matriz[i + k][j - k] != invertido[k])
+                            break;
+                    }
+                    if (k == tam_p)
+                        achou = 1;
+                }
+            }
+        }
+    }
      return achou;
  }
+
 
 
 
