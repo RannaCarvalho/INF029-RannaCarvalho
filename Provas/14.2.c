@@ -1,20 +1,30 @@
 #include <stdio.h>
 
-int multiplica (int a, int b){
-    int mult;
-    
-    mult = a*b;
+int multiplica(int a, int b){
+    return a * b;
 }
+
+int soma(int x, int y){
+    return x + y;
+}
+
 int main()
 {
-    int a, b, resultado;
+    int a, b, c, d;
+    int mult1, mult2, resultado;
     
-    printf("digite dois numeros a serem multiplicados: \n");
-    scanf ("%d %d", &a, &b);
+    printf("Digite dois numeros a serem multiplicados: \n");
+    scanf("%d %d", &a, &b);
     
-    resultado = multiplica(a, b);
+    printf("Digite mais dois numeros a serem multiplicados: \n");
+    scanf("%d %d", &c, &d);
     
-    printf("%d x %d: %d", a, b, resultado);
+    mult1 = multiplica(a, b);
+    mult2 = multiplica(c, d);
+    
+    resultado = soma(mult1, mult2);
+    
+    printf("O resultado final: %d\n", resultado);
 
     return 0;
 }
