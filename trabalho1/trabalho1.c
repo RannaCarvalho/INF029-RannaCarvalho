@@ -546,41 +546,28 @@ int main()
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
-    return qtdOcorrencias;
-}
-#include <stdio.h>
+  char base[20], busca[10];
+  sprintf(base, "%d", numerobase);
+  sprintf(busca, "%d", numerobusca);
 
-int q6(int numerobase, int numerobusca)
-{
-    int qtdOcorrencias=0;
-    
-    while (numerobase>0){
-        int num = numerobase%10;
-        numerobase/=10;
-        if(numerobusca==num){
-            qtdOcorrencias++;
-        }
+  int qtdOcorrencias = 0;
+
+  int tamBusca = strlen(busca);
+  int tamBase = strlen(base);
+
+  for (int i = 0; i <= tamBase - tamBusca; i++)
+  {
+    int j;
+    for (j = 0; j < tamBusca; j++)
+    {
+      if (base[i + j] != busca[j])
+        break;
     }
-    return qtdOcorrencias;
-}
+    if (j == tamBusca)
+      qtdOcorrencias++;
+  }
 
-int main()
-{
-    int num, numerobusca, numerobase;
-    int qtdOcorrencias, resultado;
-    
-    printf("Digite um numero inteiro: \n");
-    scanf("%d", &numerobase);
-    
-    printf("\nDigite um numero a ser buscado dentro do numero anterior: \n");
-    scanf("%d", &numerobusca);
-    
-    resultado= q6(numerobase, numerobusca);
-    
-    printf("\no numero %d foi encontrado %d vezes.", numerobusca, resultado);
-
-    return 0;
+  return qtdOcorrencias;
 }
 
 /*
