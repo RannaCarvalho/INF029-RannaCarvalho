@@ -89,7 +89,7 @@ int teste(int a)
     return val;
 }
 
-int main()
+/*int main()
 {
     int num;
 
@@ -302,7 +302,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     return dma;
 }
 
-int main() {
+/*int main() {
     char data[20];
     printf("Digite uma data (dd/mm/aaaa): ");
     if (scanf("%19s", data) != 1) return 0;
@@ -389,7 +389,7 @@ int q3(char *texto, char c, int isCaseSensitive)
     return qtdOcorrencias;
 }
 
-int main()
+/*int main()
 {
     char texto[TAM];
     char caractere;
@@ -458,7 +458,7 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     return qtdOcorrencias;
 }
 
-int main()
+/*int main()
 {
     char strTexto[30];
     char strBusca[30];
@@ -521,7 +521,7 @@ int q5(int num)
     
     return invertido;
 }
-int main()
+/*int main()
 {
     int invertido, num, resultado;
     printf ("Digite o número a ser invertido: \n");
