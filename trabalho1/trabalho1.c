@@ -21,7 +21,7 @@
 // #################################################
 
 #include <stdio.h>
-#include "trabalho1.h" 
+#include "trabalho1.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -40,69 +40,43 @@ DataQuebrada quebraData(char data[]);
  */
 int somar(int x, int y)
 {
-    int soma;
-    soma = x + y;
-    return soma;
-}
-
-/*int main()
-{
-    int x, y, resultado;
-
-    printf("Digite o primeiro valor: ");
-    scanf("%d", &x);
-
-    printf("Digite o segundo valor: ");
-    scanf("%d", &y);
-
-    resultado = somar(x, y);
-
-    printf("\nResultado da soma: %d\n", resultado);
-
-    return 0;
+  int soma;
+  soma = x + y;
+  return soma;
 }
 
 /*
+## função utilizada para testes  ##
+
+ fatorial = fatorial de um número
+@objetivo
+    calcular o fatorial de um número
+@entrada
+    um inteiro x
+@saida
+    fatorial de x -> x!
+ */
 int fatorial(int x)
-{
-    int i, fat = 1;
+{ // função utilizada para testes
+  int i, fat = 1;
 
-    for (i = x; i > 1; i--)
-        fat = fat * i;
+  for (i = x; i > 1; i--)
+    fat = fat * i;
 
-    return fat;
+  return fat;
 }
 
-/*  Função simples usada para testes
-    Se a = 2, retorna 3
-    Caso contrário, retorna 4
-*/
 int teste(int a)
 {
-    int val;
+  int val;
+  if (a == 2)
+    val = 3;
+  else
+    val = 4;
 
-    if (a == 2)
-        val = 3;
-    else
-        val = 4;
-
-    return val;
+  return val;
 }
 
-/*int main()
-{
-    int num;
-
-    printf("Digite um número para calcular o fatorial: ");
-    scanf("%d", &num);
-
-    printf("Fatorial de %d = %d\n", num, fatorial(num));
-
-    printf("\nTeste(2) = %d\n", teste(2));
-    printf("Teste(5) = %d\n", teste(5));
-
-    return 0;
-}
 /*
  Q1 = validar data
 @objetivo
@@ -113,189 +87,206 @@ int teste(int a)
     0 -> se data inválida
     1 -> se data válida
  @restrições
-    Não utilizar funções próprias de string (ex: strtok)   
+    Não utilizar funções próprias de string (ex: strtok)
     pode utilizar strlen para pegar o tamanho da string
  */
-
-
 
 /*
  Q2 = diferença entre duas datas
  @objetivo
-    Calcular a diferença em anos, meses e dias entre duas datas
+     Calcular a diferença em anos, meses e dias entre duas datas
  @entrada
-    uma string datainicial, uma string datafinal. 
+     uma string datainicial, uma string datafinal.
  @saida
-    Retorna um tipo DiasMesesAnos. No atributo retorno, deve ter os possíveis valores abaixo
-    1 -> cálculo de diferença realizado com sucesso
-    2 -> datainicial inválida
-    3 -> datafinal inválida
-    4 -> datainicial > datafinal
-    Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
+     Retorna um tipo DiasMesesAnos. No atributo retorno, deve ter os possíveis valores abaixo
+     1 -> cálculo de diferença realizado com sucesso
+     2 -> datainicial inválida
+     3 -> datafinal inválida
+     4 -> datainicial > datafinal
+     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
-
-#include <stdio.h>
-#include <stdlib.h> 
-#include <string.h> 
-
-typedef struct DQ
-{
-    int iDia;
-    int iMes;
-    int iAno;
-    int valido; 
-} DataQuebrada;
-
-typedef struct Qtd
-{
-    int qtdDias;
-    int qtdMeses;
-    int qtdAnos;
-    int retorno; 
-} DiasMesesAnos;
-
-int q1(char data[]);
-DataQuebrada quebraData(char data[]);
-DiasMesesAnos q2(char datainicial[], char datafinal[]);
-
 int q1(char data[])
 {
-    int i = 0, j = 0;
-    int dia = 0, mes = 0, ano = 0;
-    char iDia[3] = "", iMes[3] = "", iAno[5] = ""; 
+  int i = 0, j = 0;
+  int dia = 0, mes = 0, ano = 0;
+  char iDia[3] = "", iMes[3] = "", iAno[5] = "";
 
-    while (data[i] != '/' && data[i] != '\0') {
-        if (j >= 2) return 0; 
-        iDia[j++] = data[i++];
-    }
-    iDia[j] = '\0';
-    if (data[i] == '\0') return 0; 
-    i++; 
-    j = 0;
-    while (data[i] != '/' && data[i] != '\0') {
-        if (j >= 2) return 0; 
-        iMes[j++] = data[i++];
-    }
-    iMes[j] = '\0';
-    if (data[i] == '\0') return 0; 
-    i++; 
-    j = 0;
-    while (data[i] != '\0') {
-        if (j >= 4) return 0; // Mais de 4 dígitos
-        iAno[j++] = data[i++];
-    }
-    iAno[j] = '\0';
+  while (data[i] != '/' && data[i] != '\0')
+  {
+    if (j >= 2)
+      return 0;
+    iDia[j++] = data[i++];
+  }
+  iDia[j] = '\0';
+  if (data[i] == '\0')
+    return 0;
+  i++;
+  j = 0;
+  while (data[i] != '/' && data[i] != '\0')
+  {
+    if (j >= 2)
+      return 0;
+    iMes[j++] = data[i++];
+  }
+  iMes[j] = '\0';
+  if (data[i] == '\0')
+    return 0;
+  i++;
+  j = 0;
+  while (data[i] != '\0')
+  {
+    if (j >= 4)
+      return 0; // Mais de 4 dígitos
+    iAno[j++] = data[i++];
+  }
+  iAno[j] = '\0';
 
-    if (strlen(iAno) != 2 && strlen(iAno) != 4) return 0;
+  if (strlen(iAno) != 2 && strlen(iAno) != 4)
+    return 0;
 
-    dia = 0;
-    for (i = 0; iDia[i] != '\0'; i++) {
-        if (iDia[i] < '0' || iDia[i] > '9') return 0;
-        dia = dia * 10 + (iDia[i] - '0');
-    }
+  dia = 0;
+  for (i = 0; iDia[i] != '\0'; i++)
+  {
+    if (iDia[i] < '0' || iDia[i] > '9')
+      return 0;
+    dia = dia * 10 + (iDia[i] - '0');
+  }
 
-    mes = 0;
-    for (i = 0; iMes[i] != '\0'; i++) {
-        if (iMes[i] < '0' || iMes[i] > '9') return 0;
-        mes = mes * 10 + (iMes[i] - '0');
-    }
+  mes = 0;
+  for (i = 0; iMes[i] != '\0'; i++)
+  {
+    if (iMes[i] < '0' || iMes[i] > '9')
+      return 0;
+    mes = mes * 10 + (iMes[i] - '0');
+  }
 
-    ano = 0;
-    for (i = 0; iAno[i] != '\0'; i++) {
-        if (iAno[i] < '0' || iAno[i] > '9') return 0;
-        ano = ano * 10 + (iAno[i] - '0');
-    }
+  ano = 0;
+  for (i = 0; iAno[i] != '\0'; i++)
+  {
+    if (iAno[i] < '0' || iAno[i] > '9')
+      return 0;
+    ano = ano * 10 + (iAno[i] - '0');
+  }
 
-    if (strlen(iAno) == 2) {
-        ano += 2000; // ex: 23 -> 2023
-    }
-    if (mes < 1 || mes > 12) return 0;
-    if (dia < 1) return 0;
+  if (strlen(iAno) == 2)
+  {
+    ano += 2000; // ex: 23 -> 2023
+  }
+  if (mes < 1 || mes > 12)
+    return 0;
+  if (dia < 1)
+    return 0;
 
-    int diasNoMes;
-    int bissexto = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0));
+  int diasNoMes;
+  int bissexto = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0));
 
-    switch (mes) {
-        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-            diasNoMes = 31; break;
-        case 4: case 6: case 9: case 11:
-            diasNoMes = 30; break;
-        case 2:
-            diasNoMes = bissexto ? 29 : 28;
-            break;
-        default:
-            return 0; 
-    }
+  switch (mes)
+  {
+  case 1:
+  case 3:
+  case 5:
+  case 7:
+  case 8:
+  case 10:
+  case 12:
+    diasNoMes = 31;
+    break;
+  case 4:
+  case 6:
+  case 9:
+  case 11:
+    diasNoMes = 30;
+    break;
+  case 2:
+    diasNoMes = bissexto ? 29 : 28;
+    break;
+  default:
+    return 0;
+  }
 
-    if (dia > diasNoMes) return 0;
+  if (dia > diasNoMes)
+    return 0;
 
-    return 1; 
+  return 1;
 }
-
 
 DataQuebrada quebraData(char data[])
 {
-    DataQuebrada dq = {0, 0, 0, 0}; // Inicializa com valores zerados e invalido (0)
-    char sDia[3];
-	char sMes[3];
-	char sAno[5];
-	int i;	
-	
-	for (i = 0; data[i] != '/' && data[i] != '\0'; i++){
-		sDia[i] = data[i];	
-	}
-	if(i == 1 || i == 2){
-		sDia[i] = '\0';	
-	} else {
-		return dq; 
-	}	
-	
-	int j = i + 1; 
-	i = 0;
+  DataQuebrada dq = {0, 0, 0, 0}; // Inicializa com valores zerados e invalido (0)
+  char sDia[3];
+  char sMes[3];
+  char sAno[5];
+  int i;
 
-	for (; data[j] != '/' && data[j] != '\0'; j++){
-		sMes[i] = data[j];
-		i++;
-	}
-
-	if(i == 1 || i == 2){ 
-		sMes[i] = '\0';	
-	} else {
-		return dq; 
-	}
-	
-	j = j + 1; 
-	i = 0;
-	
-    // --- Extração do Ano ---
-	for(; data[j] != '\0'; j++){
-	 	sAno[i] = data[j];
-	 	i++;
-	}
-
-	if(i == 2 || i == 4){ 
-		sAno[i] = '\0';	
-	} else {
-		return dq; 
-	}
-    dq.valido = 0; 
-    
-    if (q1(data) == 1) {
-        int dia_int = atoi(sDia);
-        int mes_int = atoi(sMes);
-        int ano_int = atoi(sAno);
-
-        if (strlen(sAno) == 2) {
-            ano_int += 2000;
-        }
-
-        dq.iDia = dia_int;
-        dq.iMes = mes_int;
-        dq.iAno = ano_int;
-        dq.valido = 1;
-    }
-    
+  for (i = 0; data[i] != '/' && data[i] != '\0'; i++)
+  {
+    sDia[i] = data[i];
+  }
+  if (i == 1 || i == 2)
+  {
+    sDia[i] = '\0';
+  }
+  else
+  {
     return dq;
+  }
+
+  int j = i + 1;
+  i = 0;
+
+  for (; data[j] != '/' && data[j] != '\0'; j++)
+  {
+    sMes[i] = data[j];
+    i++;
+  }
+
+  if (i == 1 || i == 2)
+  {
+    sMes[i] = '\0';
+  }
+  else
+  {
+    return dq;
+  }
+
+  j = j + 1;
+  i = 0;
+
+  // --- Extração do Ano ---
+  for (; data[j] != '\0'; j++)
+  {
+    sAno[i] = data[j];
+    i++;
+  }
+
+  if (i == 2 || i == 4)
+  {
+    sAno[i] = '\0';
+  }
+  else
+  {
+    return dq;
+  }
+  dq.valido = 0;
+
+  if (q1(data) == 1)
+  {
+    int dia_int = atoi(sDia);
+    int mes_int = atoi(sMes);
+    int ano_int = atoi(sAno);
+
+    if (strlen(sAno) == 2)
+    {
+      ano_int += 2000;
+    }
+
+    dq.iDia = dia_int;
+    dq.iMes = mes_int;
+    dq.iAno = ano_int;
+    dq.valido = 1;
+  }
+
+  return dq;
 }
 
 /**
@@ -306,86 +297,60 @@ DataQuebrada quebraData(char data[])
  */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
-    DiasMesesAnos dma = {0,0,0,0};
+  DiasMesesAnos dma = {0, 0, 0, 0};
 
-    if (q1(datainicial) == 0) {
-        dma.retorno = 2; 
-        return dma;
-    }
-    if (q1(datafinal) == 0) {
-        dma.retorno = 3; 
-        return dma;
-    }
-
-    DataQuebrada inicial = quebraData(datainicial);
-    DataQuebrada final = quebraData(datafinal);
-    
-    if (final.iAno < inicial.iAno) {
-        dma.retorno = 4;
-        return dma;
-    } else if ((final.iAno == inicial.iAno) && (inicial.iMes > final.iMes)) {
-        dma.retorno = 4;
-        return dma;
-    } else if ((final.iAno == inicial.iAno) && (inicial.iMes == final.iMes) && (final.iDia < inicial.iDia)) {
-        dma.retorno = 4;
-        return dma;
-    }
-
-    dma.qtdAnos = final.iAno - inicial.iAno;
-    dma.qtdMeses = final.iMes - inicial.iMes;
-    dma.qtdDias = final.iDia - inicial.iDia;
-
-    if (dma.qtdDias < 0) {
-        dma.qtdDias += 30; 
-        dma.qtdMeses--;
-    }
-
-    if (dma.qtdMeses < 0) {
-        dma.qtdMeses += 12;
-        dma.qtdAnos--;
-    }
-
-    dma.retorno = 1; 
+  if (q1(datainicial) == 0)
+  {
+    dma.retorno = 2;
     return dma;
+  }
+  if (q1(datafinal) == 0)
+  {
+    dma.retorno = 3;
+    return dma;
+  }
+
+  DataQuebrada inicial = quebraData(datainicial);
+  DataQuebrada final = quebraData(datafinal);
+
+  if (final.iAno < inicial.iAno)
+  {
+    dma.retorno = 4;
+    return dma;
+  }
+  else if ((final.iAno == inicial.iAno) && (inicial.iMes > final.iMes))
+  {
+    dma.retorno = 4;
+    return dma;
+  }
+  else if ((final.iAno == inicial.iAno) && (inicial.iMes == final.iMes) && (final.iDia < inicial.iDia))
+  {
+    dma.retorno = 4;
+    return dma;
+  }
+
+  dma.qtdAnos = final.iAno - inicial.iAno;
+  dma.qtdMeses = final.iMes - inicial.iMes;
+  dma.qtdDias = final.iDia - inicial.iDia;
+
+  if (dma.qtdDias < 0)
+  {
+    dma.qtdDias += 30;
+    dma.qtdMeses--;
+  }
+
+  if (dma.qtdMeses < 0)
+  {
+    dma.qtdMeses += 12;
+    dma.qtdAnos--;
+  }
+
+  dma.retorno = 1;
+  return dma;
 }
 
-int main() {
-    char data1[] = "29/02/2024"; 
-    char data2[] = "31/04/2023"; 
-    char data3[] = "01/05/2023";
-    char data4[] = "15/10/25";   
-
-    printf("--- Teste de q1 (Validação) ---\n");
-    printf("Data 1 (%s): %s\n", data1, q1(data1) ? "Valida (1)" : "Invalida (0)");
-    printf("Data 2 (%s): %s\n", data2, q1(data2) ? "Valida (1)" : "Invalida (0)");
-    printf("Data 3 (%s): %s\n", data3, q1(data3) ? "Valida (1)" : "Invalida (0)");
-    printf("Data 4 (%s): %s\n", data4, q1(data4) ? "Valida (1)" : "Invalida (0)");
-    printf("\n");
-
-    printf("--- Teste de quebraData (Quebra) ---\n");
-    DataQuebrada dq1 = quebraData(data1);
-    printf("Data 1: Dia=%d, Mes=%d, Ano=%d, Valido=%d\n", dq1.iDia, dq1.iMes, dq1.iAno, dq1.valido);
-
-    DataQuebrada dq4 = quebraData(data4);
-    printf("Data 4: Dia=%d, Mes=%d, Ano=%d, Valido=%d\n", dq4.iDia, dq4.iMes, dq4.iAno, dq4.valido);
-    printf("\n");
-
-
-    printf("--- Teste de q2 (Diferença) ---\n");
-    DiasMesesAnos dma1 = q2("10/01/2023", "15/05/2025");
-    printf("10/01/2023 para 15/05/2025: Retorno: %d, Anos: %d, Meses: %d, Dias: %d\n", dma1.retorno, dma1.qtdAnos, dma1.qtdMeses, dma1.qtdDias);
-
-    DiasMesesAnos dma2 = q2("25/11/2023", "05/01/2024");
-    printf("25/11/2023 para 05/01/2024: Retorno: %d, Anos: %d, Meses: %d, Dias: %d\n", dma2.retorno, dma2.qtdAnos, dma2.qtdMeses, dma2.qtdDias);
-
-    DiasMesesAnos dma3 = q2("15/05/2025", "10/01/2023");
-    printf("15/05/2025 para 10/01/2023: Retorno: %d\n", dma3.retorno); // Esperado: 4
-
-    DiasMesesAnos dma4 = q2("31/02/2023", "10/01/2023");
-    printf("31/02/2023 para 10/01/2023: Retorno: %d\n", dma4.retorno); // Esperado: 2
-
-    return 0;
-}
+/* main removed to avoid multiple-definition when linking with corretor.c / novoCorretor.c
+   Keep tests in separate files (corretor.c / novoCorretor.c) which define main(). */
 /*int main() {
     char data[20];
     printf("Digite uma data (dd/mm/aaaa): ");
@@ -453,24 +418,24 @@ int main() {
 
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = 0;
-    int i;
+  int qtdOcorrencias = 0;
+  int i;
 
-    for (i = 0; texto[i] != '\0'; i++)
+  for (i = 0; texto[i] != '\0'; i++)
+  {
+    if (isCaseSensitive == 1)
     {
-        if (isCaseSensitive==1)
-        {
-            if (texto[i] == c)
-                qtdOcorrencias++;
-        }
-        else
-        {
-            if (tolower(texto[i]) == tolower(c))
-                qtdOcorrencias++;
-        }
+      if (texto[i] == c)
+        qtdOcorrencias++;
     }
+    else
+    {
+      if (tolower(texto[i]) == tolower(c))
+        qtdOcorrencias++;
+    }
+  }
 
-    return qtdOcorrencias;
+  return qtdOcorrencias;
 }
 
 /*int main()
@@ -482,7 +447,7 @@ int q3(char *texto, char c, int isCaseSensitive)
 
     printf("Digite um texto: ");
     fgets(texto, TAM, stdin);
-    texto[strcspn(texto, "\n")] = '\0'; 
+    texto[strcspn(texto, "\n")] = '\0';
 
     printf("Digite o caractere a ser contado: ");
     scanf(" %c", &caractere);
@@ -516,30 +481,34 @@ int q3(char *texto, char c, int isCaseSensitive)
 
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = 0;
-    int i, j, k = 0;
-    int lenTexto = strlen(strTexto);
-    int lenBusca = strlen(strBusca);
+  int qtdOcorrencias = 0;
+  int i, j, k = 0;
+  int lenTexto = strlen(strTexto);
+  int lenBusca = strlen(strBusca);
 
-    // percorre o texto até onde a palavra cabe
-    for (i = 0; i <= lenTexto - lenBusca; i++) {
-        int achou = 1;
+  // percorre o texto até onde a palavra cabe
+  for (i = 0; i <= lenTexto - lenBusca; i++)
+  {
+    int achou = 1;
 
-        for (j = 0; j < lenBusca; j++) {
-            if (strTexto[i + j] != strBusca[j]) {
-                achou = 0;
-                break;
-            }
-        }
-
-        if (achou) {
-            posicoes[k++] = i;               // posição inicial
-            posicoes[k++] = i + lenBusca - 1; // posição final
-            qtdOcorrencias++;
-        }
+    for (j = 0; j < lenBusca; j++)
+    {
+      if (strTexto[i + j] != strBusca[j])
+      {
+        achou = 0;
+        break;
+      }
     }
 
-    return qtdOcorrencias;
+    if (achou)
+    {
+      posicoes[k++] = i;                // posição inicial
+      posicoes[k++] = i + lenBusca - 1; // posição final
+      qtdOcorrencias++;
+    }
+  }
+
+  return qtdOcorrencias;
 }
 
 /*int main()
@@ -589,28 +558,31 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+  int invertido = 0;
 
-    return num;
-}
-#include <stdio.h>
-
-int q5(int num)
-{
-    int invertido=0;
- 
-    while (num>0){
-        invertido= invertido * 10 +(num%10);
-        num/=10;
-    }
-    
-    return invertido;
+  if (num == 0)
+    return 0;
+  int negativo = 0;
+  if (num < 0)
+  {
+    negativo = 1;
+    num = -num;
+  }
+  while (num > 0)
+  {
+    invertido = invertido * 10 + (num % 10);
+    num /= 10;
+  }
+  if (negativo)
+    invertido = -invertido;
+  return invertido;
 }
 /*int main()
 {
     int invertido, num, resultado;
     printf ("Digite o número a ser invertido: \n");
     scanf ("%d", &num);
-    
+
     printf("\n");
     resultado = q5(num);
     printf("Número invertido: %d\n", resultado);
@@ -630,23 +602,26 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-	int tamanho_busca, tamanho_base, qtdOcorrencias = 0;
-	char textobase[20], textobusca[10];
-	sprintf(textobase, "%d", numerobase);
-	sprintf(textobusca, "%d", numerobusca);
-	tamanho_busca = strlen(textobusca);
-	tamanho_base = strlen(textobase);
-	
-	for (int i = 0; i <= tamanho_base - tamanho_busca; i++){
-	    int j;
-	    for (j = 0; j < tamanho_busca; j++){
-	      if (textobase[i + j] != textobusca[j])
-	        break;
-	    	}
-	    if (j == tamanho_busca) qtdOcorrencias++;
-		}
-	  return qtdOcorrencias;
-	}
+  int tamanho_busca, tamanho_base, qtdOcorrencias = 0;
+  char textobase[20], textobusca[10];
+  sprintf(textobase, "%d", numerobase);
+  sprintf(textobusca, "%d", numerobusca);
+  tamanho_busca = strlen(textobusca);
+  tamanho_base = strlen(textobase);
+
+  for (int i = 0; i <= tamanho_base - tamanho_busca; i++)
+  {
+    int j;
+    for (j = 0; j < tamanho_busca; j++)
+    {
+      if (textobase[i + j] != textobusca[j])
+        break;
+    }
+    if (j == tamanho_busca)
+      qtdOcorrencias++;
+  }
+  return qtdOcorrencias;
+}
 
 /*
  Q7 = jogo busca palavras
@@ -660,73 +635,93 @@ int q6(int numerobase, int numerobusca)
 
 int q7(char matriz[8][10], char palavra[5])
 {
-    int encontrou = 0;
-    int linha, coluna, indice, tamanho;
-    char invertida[5];
+  int encontrou = 0;
+  int linha, coluna, indice, tamanho;
+  char invertida[5];
 
-    for (tamanho = 0; palavra[tamanho]; tamanho++);
+  for (tamanho = 0; palavra[tamanho]; tamanho++)
+    ;
 
-    for (linha = tamanho - 1, coluna = 0; linha >= 0; linha--, coluna++) {
-        invertida[coluna] = palavra[linha];
-    }
+  for (linha = tamanho - 1, coluna = 0; linha >= 0; linha--, coluna++)
+  {
+    invertida[coluna] = palavra[linha];
+  }
 
-    for (linha = 0; linha < 8 && !encontrou; linha++) {
-        for (coluna = 0; coluna < 10 - tamanho + 1 && !encontrou; coluna++) {
-            for (indice = 0; indice < tamanho; indice++) {
-                if (matriz[linha][coluna + indice] != palavra[indice] &&
-                    matriz[linha][coluna + indice] != invertida[indice]) {
-                    break;
-                }
-            }
-            if (indice == tamanho)
-                encontrou = 1;
+  for (linha = 0; linha < 8 && !encontrou; linha++)
+  {
+    for (coluna = 0; coluna < 10 - tamanho + 1 && !encontrou; coluna++)
+    {
+      for (indice = 0; indice < tamanho; indice++)
+      {
+        if (matriz[linha][coluna + indice] != palavra[indice] &&
+            matriz[linha][coluna + indice] != invertida[indice])
+        {
+          break;
         }
+      }
+      if (indice == tamanho)
+        encontrou = 1;
     }
+  }
 
-    for (linha = 0; linha < 10 - tamanho + 1 && !encontrou; linha++) {
-        for (coluna = 0; coluna < 8 && !encontrou; coluna++) {
-            for (indice = 0; indice < tamanho; indice++) {
-                if (matriz[coluna + indice][linha] != palavra[indice] &&
-                    matriz[coluna + indice][linha] != invertida[indice]) {
-                    break;
-                }
-            }
-            if (indice == tamanho)
-                encontrou = 1;
+  for (linha = 0; linha < 10 - tamanho + 1 && !encontrou; linha++)
+  {
+    for (coluna = 0; coluna < 8 && !encontrou; coluna++)
+    {
+      for (indice = 0; indice < tamanho; indice++)
+      {
+        if (matriz[coluna + indice][linha] != palavra[indice] &&
+            matriz[coluna + indice][linha] != invertida[indice])
+        {
+          break;
         }
+      }
+      if (indice == tamanho)
+        encontrou = 1;
     }
+  }
 
-    for (int linIni = 0; linIni < 8; linIni++) {
-        for (int colIni = 0; colIni < 10; colIni++) {
-            for (linha = linIni; linha < 8 && !encontrou; linha++) {
-                for (coluna = colIni; coluna < 10 && !encontrou; coluna++) {
-                    for (indice = 0; indice < tamanho && coluna + indice < 10; indice++) {
-                        if (matriz[linha + indice][coluna + indice] != palavra[indice] &&
-                            matriz[linha + indice][coluna + indice] != invertida[indice])
-                            break;
-                    }
-                    if (indice == tamanho)
-                        encontrou = 1;
-                }
-            }
+  for (int linIni = 0; linIni < 8; linIni++)
+  {
+    for (int colIni = 0; colIni < 10; colIni++)
+    {
+      for (linha = linIni; linha < 8 && !encontrou; linha++)
+      {
+        for (coluna = colIni; coluna < 10 && !encontrou; coluna++)
+        {
+          for (indice = 0; indice < tamanho && coluna + indice < 10; indice++)
+          {
+            if (matriz[linha + indice][coluna + indice] != palavra[indice] &&
+                matriz[linha + indice][coluna + indice] != invertida[indice])
+              break;
+          }
+          if (indice == tamanho)
+            encontrou = 1;
         }
+      }
     }
+  }
 
-    for (int linIni = 0; linIni < 8 && !encontrou; linIni++) {
-        for (int colIni = 10 - 1; colIni >= 0 && !encontrou; colIni--) {
-            for (linha = linIni; linha < 8 && !encontrou; linha++) {
-                for (coluna = colIni; coluna >= 0 && !encontrou; coluna--) {
-                    for (indice = 0; indice < tamanho; indice++) {
-                        if (matriz[linha + indice][coluna - indice] != palavra[indice] &&
-                            matriz[linha + indice][coluna - indice] != invertida[indice])
-                            break;
-                    }
-                    if (indice == tamanho)
-                        encontrou = 1;
-                }
-            }
+  for (int linIni = 0; linIni < 8 && !encontrou; linIni++)
+  {
+    for (int colIni = 10 - 1; colIni >= 0 && !encontrou; colIni--)
+    {
+      for (linha = linIni; linha < 8 && !encontrou; linha++)
+      {
+        for (coluna = colIni; coluna >= 0 && !encontrou; coluna--)
+        {
+          for (indice = 0; indice < tamanho; indice++)
+          {
+            if (matriz[linha + indice][coluna - indice] != palavra[indice] &&
+                matriz[linha + indice][coluna - indice] != invertida[indice])
+              break;
+          }
+          if (indice == tamanho)
+            encontrou = 1;
         }
+      }
     }
+  }
 
-    return encontrou;
+  return encontrou;
 }
