@@ -546,29 +546,23 @@ int main()
 
 int q6(int numerobase, int numerobusca)
 {
-  char base[20], busca[10];
-  sprintf(base, "%d", numerobase);
-  sprintf(busca, "%d", numerobusca);
-
-  int qtdOcorrencias = 0;
-
-  int tamBusca = strlen(busca);
-  int tamBase = strlen(base);
-
-  for (int i = 0; i <= tamBase - tamBusca; i++)
-  {
-    int j;
-    for (j = 0; j < tamBusca; j++)
-    {
-      if (base[i + j] != busca[j])
-        break;
-    }
-    if (j == tamBusca)
-      qtdOcorrencias++;
-  }
-
-  return qtdOcorrencias;
-}
+	int tamanho_busca, tamanho_base, qtdOcorrencias = 0;
+	char textobase[20], textobusca[10];
+	sprintf(textobase, "%d", numerobase);
+	sprintf(textobusca, "%d", numerobusca);
+	tamanho_busca = strlen(busca);
+	tamanho_base = strlen(base);
+	
+	for (int i = 0; i <= tamanho_base - tamanho_busca; i++){
+	    int j;
+	    for (j = 0; j < tamanho_busca; j++){
+	      if (textobase[i + j] != textobusca[j])
+	        break;
+	    	}
+	    if (j == tamanho_busca) qtdOcorrencias++;
+		}
+	  return qtdOcorrencias;
+	}
 
 /*
  Q7 = jogo busca palavras
@@ -580,128 +574,75 @@ int q6(int numerobase, int numerobusca)
     1 se achou 0 se não achou
  */
 
- int q7(char matriz[8][10], char palavra[5])
- {
-    int achou = 0;
-    int i, j, k, tam_p;
-    char invertido[5];
-    for (tam_p = 0; palavra[tam_p]; tam_p++);
-    for (i = tam_p - 1, j = 0; i >= 0; i--, j++) {
-        invertido[j] = palavra[i];
+int q7(char matriz[8][10], char palavra[5])
+{
+    int encontrou = 0;
+    int linha, coluna, indice, tamanho;
+    char invertida[5];
+
+    for (tamanho = 0; palavra[tamanho]; tamanho++);
+
+    for (linha = tamanho - 1, coluna = 0; linha >= 0; linha--, coluna++) {
+        invertida[coluna] = palavra[linha];
     }
-    // sentido horizontal para frente e para trás
-    for (i = 0; i < 8 && !achou; i++) {
-        for (j = 0; j < 10 - tam_p + 1 && !achou; j++) {
-            for (k = 0; k < tam_p; k++) {
-                if (matriz[i][j + k] != palavra[k] && matriz[i][j + k] != invertido[k]) {
+
+    for (linha = 0; linha < 8 && !encontrou; linha++) {
+        for (coluna = 0; coluna < 10 - tamanho + 1 && !encontrou; coluna++) {
+            for (indice = 0; indice < tamanho; indice++) {
+                if (matriz[linha][coluna + indice] != palavra[indice] &&
+                    matriz[linha][coluna + indice] != invertida[indice]) {
                     break;
                 }
             }
-            if (k == tam_p)
-                achou = 1;
+            if (indice == tamanho)
+                encontrou = 1;
         }
     }
-    // sentido vertical para cima e para baixo
-    for (i = 0; i < 10 - tam_p + 1 && !achou; i++) {
-        for (j = 0; j < 8 && !achou; j++) {
-            for (k = 0; k < tam_p; k++) {
-                if (matriz[j + k][i] != palavra[k] && matriz[j + k][i] != invertido[k]) {
+
+    for (linha = 0; linha < 10 - tamanho + 1 && !encontrou; linha++) {
+        for (coluna = 0; coluna < 8 && !encontrou; coluna++) {
+            for (indice = 0; indice < tamanho; indice++) {
+                if (matriz[coluna + indice][linha] != palavra[indice] &&
+                    matriz[coluna + indice][linha] != invertida[indice]) {
                     break;
                 }
             }
-            if (k == tam_p)
-                achou = 1;
+            if (indice == tamanho)
+                encontrou = 1;
         }
     }
-    // diagonal
-    for (int l = 0; l < 8; l++) {
-        for (int c = 0; c < 10; c++) {
-            for (i = l; i < 8 && !achou; i++) {
-                for (j = c; j < 10 && !achou; j++) {
-                    for (k = 0; k < tam_p && j + k < 10; k++) {
-                        if (matriz[i + k][j + k] != palavra[k] && matriz[i + k][j + k] != invertido[k])
+
+    for (int linIni = 0; linIni < 8; linIni++) {
+        for (int colIni = 0; colIni < 10; colIni++) {
+            for (linha = linIni; linha < 8 && !encontrou; linha++) {
+                for (coluna = colIni; coluna < 10 && !encontrou; coluna++) {
+                    for (indice = 0; indice < tamanho && coluna + indice < 10; indice++) {
+                        if (matriz[linha + indice][coluna + indice] != palavra[indice] &&
+                            matriz[linha + indice][coluna + indice] != invertida[indice])
                             break;
                     }
-                    if (k == tam_p)
-                        achou = 1;
+                    if (indice == tamanho)
+                        encontrou = 1;
                 }
             }
         }
     }
-    for (int l = 0; l < 8 && !achou; l++) {
-        for (int c = 10 - 1; c >= 0 && !achou; c--) {
-            for (i = l; i < 8 && !achou; i++) {
-                for (j = c; j >= 0 && !achou; j--) {
-                    for (k = 0; k < tam_p; k++) {
-                        if (matriz[i + k][j - k] != palavra[k] && matriz[i + k][j - k] != invertido[k])
+
+    for (int linIni = 0; linIni < 8 && !encontrou; linIni++) {
+        for (int colIni = 10 - 1; colIni >= 0 && !encontrou; colIni--) {
+            for (linha = linIni; linha < 8 && !encontrou; linha++) {
+                for (coluna = colIni; coluna >= 0 && !encontrou; coluna--) {
+                    for (indice = 0; indice < tamanho; indice++) {
+                        if (matriz[linha + indice][coluna - indice] != palavra[indice] &&
+                            matriz[linha + indice][coluna - indice] != invertida[indice])
                             break;
                     }
-                    if (k == tam_p)
-                        achou = 1;
+                    if (indice == tamanho)
+                        encontrou = 1;
                 }
             }
         }
     }
-     return achou;
- }
 
-
-
-
-DataQuebrada quebraData(char data[]){
-  DataQuebrada dq;
-  char sDia[3];
-	char sMes[3];
-	char sAno[5];
-	int i; 
-
-	for (i = 0; data[i] != '/'; i++){
-		sDia[i] = data[i];	
-	}
-	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
-		sDia[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }  
-	
-
-	int j = i + 1; //anda 1 cada para pular a barra
-	i = 0;
-
-	for (; data[j] != '/'; j++){
-		sMes[i] = data[j];
-		i++;
-	}
-
-	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
-		sMes[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }
-	
-
-	j = j + 1; //anda 1 cada para pular a barra
-	i = 0;
-	
-	for(; data[j] != '\0'; j++){
-	 	sAno[i] = data[j];
-	 	i++;
-	}
-
-	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
-		sAno[i] = '\0';  // coloca o barra zero no final
-	}else {
-		dq.valido = 0;
-    return dq;
-  }
-
-  dq.iDia = atoi(sDia);
-  dq.iMes = atoi(sMes);
-  dq.iAno = atoi(sAno); 
-
-	dq.valido = 1;
-    
-  return dq;
+    return encontrou;
 }
