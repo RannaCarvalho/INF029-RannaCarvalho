@@ -639,23 +639,17 @@ int q7(char matriz[8][10], char palavra[5])
   int linha, coluna, indice, tamanho;
   char invertida[5];
 
-  for (tamanho = 0; palavra[tamanho]; tamanho++)
-    ;
+  for (tamanho = 0; palavra[tamanho]; tamanho++);
 
   for (linha = tamanho - 1, coluna = 0; linha >= 0; linha--, coluna++)
-  {
     invertida[coluna] = palavra[linha];
-  }
+  
 
-  for (linha = 0; linha < 8 && !encontrou; linha++)
-  {
-    for (coluna = 0; coluna < 10 - tamanho + 1 && !encontrou; coluna++)
-    {
-      for (indice = 0; indice < tamanho; indice++)
-      {
+  for (linha = 0; linha < 8 && !encontrou; linha++){
+    for (coluna = 0; coluna < 10 - tamanho + 1 && !encontrou; coluna++){
+      for (indice = 0; indice < tamanho; indice++){
         if (matriz[linha][coluna + indice] != palavra[indice] &&
-            matriz[linha][coluna + indice] != invertida[indice])
-        {
+            matriz[linha][coluna + indice] != invertida[indice]){
           break;
         }
       }
@@ -664,15 +658,11 @@ int q7(char matriz[8][10], char palavra[5])
     }
   }
 
-  for (linha = 0; linha < 10 - tamanho + 1 && !encontrou; linha++)
-  {
-    for (coluna = 0; coluna < 8 && !encontrou; coluna++)
-    {
-      for (indice = 0; indice < tamanho; indice++)
-      {
+  for (linha = 0; linha < 10 - tamanho + 1 && !encontrou; linha++){
+    for (coluna = 0; coluna < 8 && !encontrou; coluna++){
+      for (indice = 0; indice < tamanho; indice++){
         if (matriz[coluna + indice][linha] != palavra[indice] &&
-            matriz[coluna + indice][linha] != invertida[indice])
-        {
+            matriz[coluna + indice][linha] != invertida[indice]){
           break;
         }
       }
@@ -681,16 +671,11 @@ int q7(char matriz[8][10], char palavra[5])
     }
   }
 
-  for (int linIni = 0; linIni < 8; linIni++)
-  {
-    for (int colIni = 0; colIni < 10; colIni++)
-    {
-      for (linha = linIni; linha < 8 && !encontrou; linha++)
-      {
-        for (coluna = colIni; coluna < 10 && !encontrou; coluna++)
-        {
-          for (indice = 0; indice < tamanho && coluna + indice < 10; indice++)
-          {
+  for (int linIni = 0; linIni < 8; linIni++){
+    for (int colIni = 0; colIni < 10; colIni++){
+      for (linha = linIni; linha < 8 && !encontrou; linha++){
+        for (coluna = colIni; coluna < 10 && !encontrou; coluna++){
+          for (indice = 0; indice < tamanho && coluna + indice < 10; indice++){
             if (matriz[linha + indice][coluna + indice] != palavra[indice] &&
                 matriz[linha + indice][coluna + indice] != invertida[indice])
               break;
@@ -702,18 +687,13 @@ int q7(char matriz[8][10], char palavra[5])
     }
   }
 
-  for (int linIni = 0; linIni < 8 && !encontrou; linIni++)
-  {
-    for (int colIni = 10 - 1; colIni >= 0 && !encontrou; colIni--)
-    {
-      for (linha = linIni; linha < 8 && !encontrou; linha++)
-      {
-        for (coluna = colIni; coluna >= 0 && !encontrou; coluna--)
-        {
-          for (indice = 0; indice < tamanho; indice++)
-          {
+  for (int linIni = 0; linIni < 8 && !encontrou; linIni++){
+    for (int colIni = 10 - 1; colIni >= 0 && !encontrou; colIni--){
+      for (linha = linIni; linha < 8 && !encontrou; linha++){
+        for (coluna = colIni; coluna >= 0 && !encontrou; coluna--){
+          for (indice = 0; indice < tamanho; indice++){
             if (matriz[linha + indice][coluna - indice] != palavra[indice] &&
-                matriz[linha + indice][coluna - indice] != invertida[indice])
+                matriz[linha + indice][coluna - indice] != invertida[indice]){
               break;
           }
           if (indice == tamanho)
@@ -728,23 +708,12 @@ int q7(char matriz[8][10], char palavra[5])
 
 void tratarString(char *strTexto) {
     int i, j;
-    int lenTexto; // Renomeado de 'tam'
-    
-    // Listas de caracteres acentuados e suas versões sem acento
-    char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
-    char strSemAcento[] = "AAAAAAAAAAaaaaaaaaaaEEEEEEEEeeeeeeeeIIIIIIIIiiiiiiiiOOOOOOOOOOooooooooooUUUUUUUUuuuuuuuu";
-    
-    for(lenTexto = 0; strTexto[lenTexto] != '\0'; lenTexto++); 
-        for(i = 0; strTexto[i] != '\0'; i++){
+    const char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
+    const char strSemAcento[] = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuu";
+    for(i = 0; strTexto[i] != '\0'; i++){
         for(j = 0; strComAcento[j] != '\0'; j++) {
-            
-            if(strTexto[i] == strComAcento[j] && strTexto[i+1] == strComAcento[j+1]) {
+            if(strTexto[i] == strComAcento[j]) {
                 strTexto[i] = strSemAcento[j];
-                 for (int k = i + 1; k < lenTexto - 1; k++) {
-                    strTexto[k] = strTexto[k+1];
-                }
-                strTexto[lenTexto - 1] = '\0';
-                lenTexto--;
                 break;
             }
         }
