@@ -45,7 +45,7 @@ int somar(int x, int y)
     return soma;
 }
 
-int main()
+/*int main()
 {
     int x, y, resultado;
 
@@ -134,12 +134,16 @@ int teste(int a)
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
 
+#include <stdio.h>
+#include <stdlib.h> 
+#include <string.h> 
+
 typedef struct DQ
 {
     int iDia;
     int iMes;
     int iAno;
-    int valido; // 0 se inválido, e 1 se válido
+    int valido; 
 } DataQuebrada;
 
 typedef struct Qtd
@@ -147,38 +151,42 @@ typedef struct Qtd
     int qtdDias;
     int qtdMeses;
     int qtdAnos;
-    int retorno;
+    int retorno; 
 } DiasMesesAnos;
+
+int q1(char data[]);
+DataQuebrada quebraData(char data[]);
+DiasMesesAnos q2(char datainicial[], char datafinal[]);
 
 int q1(char data[])
 {
     int i = 0, j = 0;
     int dia = 0, mes = 0, ano = 0;
-    char iDia[3] = "", iMes[3] = "", iAno[5] = "";
+    char iDia[3] = "", iMes[3] = "", iAno[5] = ""; 
 
     while (data[i] != '/' && data[i] != '\0') {
         if (j >= 2) return 0; 
         iDia[j++] = data[i++];
     }
     iDia[j] = '\0';
-    if (data[i] == '\0') return 0;
-    i++;
-
+    if (data[i] == '\0') return 0; 
+    i++; 
     j = 0;
     while (data[i] != '/' && data[i] != '\0') {
-        if (j >= 2) return 0;
+        if (j >= 2) return 0; 
         iMes[j++] = data[i++];
     }
     iMes[j] = '\0';
-    if (data[i] == '\0') return 0;
-    i++;
-
+    if (data[i] == '\0') return 0; 
+    i++; 
     j = 0;
     while (data[i] != '\0') {
-        if (j >= 4) return 0;
+        if (j >= 4) return 0; // Mais de 4 dígitos
         iAno[j++] = data[i++];
     }
     iAno[j] = '\0';
+
+    if (strlen(iAno) != 2 && strlen(iAno) != 4) return 0;
 
     dia = 0;
     for (i = 0; iDia[i] != '\0'; i++) {
@@ -201,78 +209,117 @@ int q1(char data[])
     if (strlen(iAno) == 2) {
         ano += 2000; // ex: 23 -> 2023
     }
-
     if (mes < 1 || mes > 12) return 0;
     if (dia < 1) return 0;
 
     int diasNoMes;
+    int bissexto = ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0));
+
     switch (mes) {
         case 1: case 3: case 5: case 7: case 8: case 10: case 12:
             diasNoMes = 31; break;
         case 4: case 6: case 9: case 11:
             diasNoMes = 30; break;
         case 2:
-            if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0))
-                diasNoMes = 29;
-            else
-                diasNoMes = 28;
+            diasNoMes = bissexto ? 29 : 28;
             break;
         default:
-            return 0;
+            return 0; 
     }
 
     if (dia > diasNoMes) return 0;
 
-    return 1;
+    return 1; 
 }
+
 
 DataQuebrada quebraData(char data[])
 {
-    DataQuebrada dq = {0,0,0,0};
+    DataQuebrada dq = {0, 0, 0, 0}; // Inicializa com valores zerados e invalido (0)
+    char sDia[3];
+	char sMes[3];
+	char sAno[5];
+	int i;	
+	
+	for (i = 0; data[i] != '/' && data[i] != '\0'; i++){
+		sDia[i] = data[i];	
+	}
+	if(i == 1 || i == 2){
+		sDia[i] = '\0';	
+	} else {
+		return dq; 
+	}	
+	
+	int j = i + 1; 
+	i = 0;
 
-    if (!q1(data)) return dq;
+	for (; data[j] != '/' && data[j] != '\0'; j++){
+		sMes[i] = data[j];
+		i++;
+	}
 
-    int i = 0, j = 0;
-    char iDia[3] = "", iMes[3] = "", iAno[5] = "";
+	if(i == 1 || i == 2){ 
+		sMes[i] = '\0';	
+	} else {
+		return dq; 
+	}
+	
+	j = j + 1; 
+	i = 0;
+	
+    // --- Extração do Ano ---
+	for(; data[j] != '\0'; j++){
+	 	sAno[i] = data[j];
+	 	i++;
+	}
 
-    while (data[i] != '/' && data[i] != '\0') iDia[j++] = data[i++]; iDia[j] = '\0'; i++;
-    j = 0;
-    while (data[i] != '/' && data[i] != '\0') iMes[j++] = data[i++]; iMes[j] = '\0'; i++;
-    j = 0;
-    while (data[i] != '\0') iAno[j++] = data[i++]; iAno[j] = '\0';
+	if(i == 2 || i == 4){ 
+		sAno[i] = '\0';	
+	} else {
+		return dq; 
+	}
+    dq.valido = 0; 
+    
+    if (q1(data) == 1) {
+        int dia_int = atoi(sDia);
+        int mes_int = atoi(sMes);
+        int ano_int = atoi(sAno);
 
-    /* conversão manual (já validado por q1) */
-    int dia = 0, mes = 0, ano = 0;
-    for (i = 0; iDia[i] != '\0'; i++) dia = dia * 10 + (iDia[i] - '0');
-    for (i = 0; iMes[i] != '\0'; i++) mes = mes * 10 + (iMes[i] - '0');
-    for (i = 0; iAno[i] != '\0'; i++) ano = ano * 10 + (iAno[i] - '0');
+        if (strlen(sAno) == 2) {
+            ano_int += 2000;
+        }
 
-    if (strlen(iAno) == 2) ano += 2000;
-
-    dq.iDia = dia;
-    dq.iMes = mes;
-    dq.iAno = ano;
-    dq.valido = 1;
+        dq.iDia = dia_int;
+        dq.iMes = mes_int;
+        dq.iAno = ano_int;
+        dq.valido = 1;
+    }
+    
     return dq;
 }
 
+/**
+ * Função q2: Calcula a diferença entre duas datas (DataFinal - DataInicial).
+ * * @param datainicial A string da data inicial.
+ * @param datafinal A string da data final.
+ * @returns DiasMesesAnos A estrutura com a diferença em dias, meses e anos.
+ */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
     DiasMesesAnos dma = {0,0,0,0};
 
-    /* validações iniciais */
     if (q1(datainicial) == 0) {
-        dma.retorno = 2;
+        dma.retorno = 2; 
         return dma;
     }
     if (q1(datafinal) == 0) {
-        dma.retorno = 3;
+        dma.retorno = 3; 
         return dma;
     }
 
     DataQuebrada inicial = quebraData(datainicial);
     DataQuebrada final = quebraData(datafinal);
-
+    
     if (final.iAno < inicial.iAno) {
         dma.retorno = 4;
         return dma;
@@ -298,10 +345,47 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
         dma.qtdAnos--;
     }
 
-    dma.retorno = 1;
+    dma.retorno = 1; 
     return dma;
 }
 
+int main() {
+    char data1[] = "29/02/2024"; 
+    char data2[] = "31/04/2023"; 
+    char data3[] = "01/05/2023";
+    char data4[] = "15/10/25";   
+
+    printf("--- Teste de q1 (Validação) ---\n");
+    printf("Data 1 (%s): %s\n", data1, q1(data1) ? "Valida (1)" : "Invalida (0)");
+    printf("Data 2 (%s): %s\n", data2, q1(data2) ? "Valida (1)" : "Invalida (0)");
+    printf("Data 3 (%s): %s\n", data3, q1(data3) ? "Valida (1)" : "Invalida (0)");
+    printf("Data 4 (%s): %s\n", data4, q1(data4) ? "Valida (1)" : "Invalida (0)");
+    printf("\n");
+
+    printf("--- Teste de quebraData (Quebra) ---\n");
+    DataQuebrada dq1 = quebraData(data1);
+    printf("Data 1: Dia=%d, Mes=%d, Ano=%d, Valido=%d\n", dq1.iDia, dq1.iMes, dq1.iAno, dq1.valido);
+
+    DataQuebrada dq4 = quebraData(data4);
+    printf("Data 4: Dia=%d, Mes=%d, Ano=%d, Valido=%d\n", dq4.iDia, dq4.iMes, dq4.iAno, dq4.valido);
+    printf("\n");
+
+
+    printf("--- Teste de q2 (Diferença) ---\n");
+    DiasMesesAnos dma1 = q2("10/01/2023", "15/05/2025");
+    printf("10/01/2023 para 15/05/2025: Retorno: %d, Anos: %d, Meses: %d, Dias: %d\n", dma1.retorno, dma1.qtdAnos, dma1.qtdMeses, dma1.qtdDias);
+
+    DiasMesesAnos dma2 = q2("25/11/2023", "05/01/2024");
+    printf("25/11/2023 para 05/01/2024: Retorno: %d, Anos: %d, Meses: %d, Dias: %d\n", dma2.retorno, dma2.qtdAnos, dma2.qtdMeses, dma2.qtdDias);
+
+    DiasMesesAnos dma3 = q2("15/05/2025", "10/01/2023");
+    printf("15/05/2025 para 10/01/2023: Retorno: %d\n", dma3.retorno); // Esperado: 4
+
+    DiasMesesAnos dma4 = q2("31/02/2023", "10/01/2023");
+    printf("31/02/2023 para 10/01/2023: Retorno: %d\n", dma4.retorno); // Esperado: 2
+
+    return 0;
+}
 /*int main() {
     char data[20];
     printf("Digite uma data (dd/mm/aaaa): ");
@@ -550,8 +634,8 @@ int q6(int numerobase, int numerobusca)
 	char textobase[20], textobusca[10];
 	sprintf(textobase, "%d", numerobase);
 	sprintf(textobusca, "%d", numerobusca);
-	tamanho_busca = strlen(busca);
-	tamanho_base = strlen(base);
+	tamanho_busca = strlen(textobusca);
+	tamanho_base = strlen(textobase);
 	
 	for (int i = 0; i <= tamanho_base - tamanho_busca; i++){
 	    int j;
