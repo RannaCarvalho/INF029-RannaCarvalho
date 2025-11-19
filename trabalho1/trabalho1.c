@@ -725,3 +725,28 @@ int q7(char matriz[8][10], char palavra[5])
 
   return encontrou;
 }
+
+void tratarString(char *strTexto) {
+    int i, j;
+    int lenTexto; // Renomeado de 'tam'
+    
+    // Listas de caracteres acentuados e suas versões sem acento
+    char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
+    char strSemAcento[] = "AAAAAAAAAAaaaaaaaaaaEEEEEEEEeeeeeeeeIIIIIIIIiiiiiiiiOOOOOOOOOOooooooooooUUUUUUUUuuuuuuuu";
+    
+    for(lenTexto = 0; strTexto[lenTexto] != '\0'; lenTexto++); 
+        for(i = 0; strTexto[i] != '\0'; i++){
+        for(j = 0; strComAcento[j] != '\0'; j++) {
+            
+            if(strTexto[i] == strComAcento[j] && strTexto[i+1] == strComAcento[j+1]) {
+                strTexto[i] = strSemAcento[j];
+                 for (int k = i + 1; k < lenTexto - 1; k++) {
+                    strTexto[k] = strTexto[k+1];
+                }
+                strTexto[lenTexto - 1] = '\0';
+                lenTexto--;
+                break;
+            }
+        }
+    }
+}
