@@ -479,96 +479,78 @@ int q3(char *texto, char c, int isCaseSensitive)
 
  */
 
-int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
-  int qtdOcorrencias = 0;
-  int i, j, k = 0;
-  int lenTexto = strlen(strTexto);
-  int lenBusca = strlen(strBusca);
-
-  for (i = 0; i <= lenTexto - lenBusca; i++)
-  {
-    int achou = 1;
-
-    for (j = 0; j < lenBusca; j++)
-    {
-      if (strTexto[i + j] != strBusca[j])
-      {
-        achou = 0;
-        break;
-      }
-    }
-
-    if (achou)
-    {
-      posicoes[k++] = i;
-      posicoes[k++] = i + lenBusca - 1;
-      qtdOcorrencias++;
-    }
-  }
-
-  return qtdOcorrencias;
+static int ehByteInicialUTF8(unsigned char b) {
+    return (b & 0xC0) != 0x80;
 }
-void tratarString(char *strTexto) {
-    int i, j;
-    const char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
-    const char strSemAcento[] = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuu";
-    
-    for (i = 0; strTexto[i] != '\0'; i++) {
-        for (j = 0; strComAcento[j] != '\0'; j++) {
-            if (strTexto[i] == strComAcento[j]) {
-                strTexto[i] = strSemAcento[j];
+
+static int contarCaracteresAteByte(const char *texto, int indiceByte) {
+    int qtdCaracteres = 0;
+    int i;
+    for (i = 0; i < indiceByte && texto[i] != '\0'; i++) {
+        if (ehByteInicialUTF8((unsigned char)texto[i])) {
+            qtdCaracteres++;
+        }
+    }
+    return qtdCaracteres;
+}
+
+static int contarCaracteresNoIntervalo(const char *texto, int inicioByte, int tamanhoBusca) {
+    int qtdCaracteres = 0;
+    int i, limite = inicioByte + tamanhoBusca;
+
+    for (i = inicioByte; i < limite && texto[i] != '\0'; i++) {
+        if (ehByteInicialUTF8((unsigned char)texto[i])) {
+            qtdCaracteres++;
+        }
+    }
+    return qtdCaracteres;
+}
+
+int q4(char *texto, char *busca, int posicoes[30])
+{
+    int qtdOcorrencias = 0;
+    int i, j, k = 0;
+    int tamanhoTexto = strlen(texto);
+    int tamanhoBusca = strlen(busca);
+
+    if (tamanhoBusca == 0 || tamanhoTexto < tamanhoBusca)
+        return 0;
+
+    for (i = 0; i <= tamanhoTexto - tamanhoBusca; i++)
+    {
+        int encontrou = 1;
+
+        for (j = 0; j < tamanhoBusca; j++)
+        {
+            if (texto[i + j] != busca[j])
+            {
+                encontrou = 0;
                 break;
             }
         }
-    }
-}
 
+        if (encontrou)
+        {
+            int posInicio = contarCaracteresAteByte(texto, i) + 1;  
+            int qtdCaracteresMatch = contarCaracteresNoIntervalo(texto, i, tamanhoBusca);
+            int posFim = posInicio + qtdCaracteresMatch - 1;
 
-/*int main()
-{
-    char strTexto[30];
-    char strBusca[30];
-    int posicoes[30];
-    int i, j, k = 0;
-    int qtdOcorrencias = -1;
-    int resultado;
-    int posicao_ini, posicao_fim;
+            if (k + 1 < 30)
+            {
+                posicoes[k++] = posInicio;  
+                posicoes[k++] = posFim;     
+            }
+            else
+            {
+                break;
+            }
 
-    printf("Digite um texto: \n");
-    fgets(strTexto, sizeof(strTexto), stdin);
-    strTexto[strcspn(strTexto, "\n")] = '\0'; // remove o '\n'
-
-    printf("Digite uma palavra a ser buscada: \n");
-    fgets(strBusca, sizeof(strBusca), stdin);
-    strBusca[strcspn(strBusca, "\n")] = '\0'; // remove o '\n'
-
-    resultado = q4(strTexto, strBusca, posicoes);
-
-    if (resultado <= 0) {
-        printf("A palavra buscada nao foi encontrada no texto.\n");
-    } else {
-        printf("A palavra buscada aparece %d vez(es) no texto.\n", resultado);
-        printf("Posicoes iniciais/finais:\n");
-        for (i = 0; i < resultado; i++) {
-            posicao_ini = posicoes[2 * i];
-            posicao_fim = posicoes[2 * i + 1];
-            printf("Ocorrencia %d: %d/%d\n", i + 1, posicao_ini, posicao_fim);
+            qtdOcorrencias++;
         }
     }
 
-    return 0;
+    return qtdOcorrencias;
 }
-
-/*
- Q5 = inverte número
- @objetivo
-    Inverter número inteiro
- @entrada
-    uma int num.
- @saida
-    Número invertido
- */
 
 int q5(int num)
 {
