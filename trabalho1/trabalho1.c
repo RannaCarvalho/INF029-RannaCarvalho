@@ -24,6 +24,8 @@
 #include "trabalho1.h"
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#define TAM 200
 
 DataQuebrada quebraData(char data[]);
 
@@ -413,8 +415,6 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     Um número n >= 0.
  */
 
-#include <ctype.h>
-#define TAM 200
 
 int q3(char *texto, char c, int isCaseSensitive)
 {
@@ -486,7 +486,6 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
   int lenTexto = strlen(strTexto);
   int lenBusca = strlen(strBusca);
 
-  // percorre o texto até onde a palavra cabe
   for (i = 0; i <= lenTexto - lenBusca; i++)
   {
     int achou = 1;
@@ -502,14 +501,29 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
     if (achou)
     {
-      posicoes[k++] = i;                // posição inicial
-      posicoes[k++] = i + lenBusca - 1; // posição final
+      posicoes[k++] = i;
+      posicoes[k++] = i + lenBusca - 1;
       qtdOcorrencias++;
     }
   }
 
   return qtdOcorrencias;
 }
+void tratarString(char *strTexto) {
+    int i, j;
+    const char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
+    const char strSemAcento[] = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuu";
+    
+    for (i = 0; strTexto[i] != '\0'; i++) {
+        for (j = 0; strComAcento[j] != '\0'; j++) {
+            if (strTexto[i] == strComAcento[j]) {
+                strTexto[i] = strSemAcento[j];
+                break;
+            }
+        }
+    }
+}
+
 
 /*int main()
 {
@@ -701,21 +715,7 @@ int q7(char matriz[8][10], char palavra[5])
         }
       }
     }
-  }
-  }
-  return encontrou;
-}
+  }}
 
-void tratarString(char *strTexto) {
-    int i, j;
-    const char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
-    const char strSemAcento[] = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuu";
-    for(i = 0; strTexto[i] != '\0'; i++){
-        for(j = 0; strComAcento[j] != '\0'; j++) {
-            if(strTexto[i] == strComAcento[j]) {
-                strTexto[i] = strSemAcento[j];
-                break;
-            }
-        }
-    }
+  return encontrou;
 }
