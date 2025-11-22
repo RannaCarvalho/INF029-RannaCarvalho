@@ -702,11 +702,11 @@ int q7(char matriz[8][10], char palavra[5])
       }
     }
   }
-
+  }
   return encontrou;
 }
 
-/*void tratarString(char *strTexto) {
+void tratarString(char *strTexto) {
     int i, j;
     const char strComAcento[] = "ÄÁÂÀÃäáâàãÉÊËÈéêëèÍÎÏÌíîïìÖÓÔÒÕöóôòõÜÚÛÙüúûù"; 
     const char strSemAcento[] = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuu";
@@ -718,4 +718,4 @@ int q7(char matriz[8][10], char palavra[5])
             }
         }
     }
-}*/
+}
