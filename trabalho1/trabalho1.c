@@ -214,7 +214,7 @@ int q1(char data[])
 
 DataQuebrada quebraData(char data[])
 {
-  DataQuebrada dq = {0, 0, 0, 0}; // Inicializa com valores zerados e invalido (0)
+  DataQuebrada dq = {0, 0, 0, 0}; 
   char sDia[3];
   char sMes[3];
   char sAno[5];
@@ -254,7 +254,6 @@ DataQuebrada quebraData(char data[])
   j = j + 1;
   i = 0;
 
-  // --- Extração do Ano ---
   for (; data[j] != '\0'; j++)
   {
     sAno[i] = data[j];
@@ -291,12 +290,6 @@ DataQuebrada quebraData(char data[])
   return dq;
 }
 
-/**
- * Função q2: Calcula a diferença entre duas datas (DataFinal - DataInicial).
- * * @param datainicial A string da data inicial.
- * @param datafinal A string da data final.
- * @returns DiasMesesAnos A estrutura com a diferença em dias, meses e anos.
- */
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
   DiasMesesAnos dma = {0, 0, 0, 0};
@@ -351,59 +344,6 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
   return dma;
 }
 
-/* main removed to avoid multiple-definition when linking with corretor.c / novoCorretor.c
-   Keep tests in separate files (corretor.c / novoCorretor.c) which define main(). */
-/*int main() {
-    char data[20];
-    printf("Digite uma data (dd/mm/aaaa): ");
-    if (scanf("%19s", data) != 1) return 0;
-
-    if (q1(data))
-        printf("\nData válida\n");
-    else
-        printf("\nData inválida\n");
-
-    char datainicial[20], datafinal[20];
-    printf("\n");
-    printf("Digite a data inicial (dd/mm/aaaa): ");
-    if (scanf("%19s", datainicial) != 1) return 0;
-    printf("Digite a data final (dd/mm/aaaa): ");
-    if (scanf("%19s", datafinal) != 1) return 0;
-
-    DiasMesesAnos resposta = q2(datainicial, datafinal);
-
-    switch (resposta.retorno) {
-        case 1:
-            printf("\nCálculo realizado com sucesso!\n");
-            printf("Diferença: %d ano(s), %d mês(es) e %d dia(s)\n",
-                   resposta.qtdAnos, resposta.qtdMeses, resposta.qtdDias);
-            break;
-        case 2:
-            printf("\nData inicial inválida!\n"); break;
-        case 3:
-            printf("\nData final inválida!\n"); break;
-        case 4:
-            printf("\nData inicial maior que a final!\n"); break;
-        default:
-            printf("\nErro desconhecido.\n");
-    }
-
-    return 0;
-}
-
-  //quebrar a string data em strings sDia, sMes, sAno
-
-
-  //printf("%s\n", data);
-
-  if (datavalida)
-      return 1;
-  else
-      return 0;
-}
-
-
-
 /*
  Q3 = encontrar caracter em texto
  @objetivo
@@ -437,31 +377,6 @@ int q3(char *texto, char c, int isCaseSensitive)
 
   return qtdOcorrencias;
 }
-
-/*int main()
-{
-    char texto[TAM];
-    char caractere;
-    int isCaseSensitive;
-    int resultado;
-
-    printf("Digite um texto: ");
-    fgets(texto, TAM, stdin);
-    texto[strcspn(texto, "\n")] = '\0';
-
-    printf("Digite o caractere a ser contado: ");
-    scanf(" %c", &caractere);
-
-    printf("Diferenciar maiúsculas e minúsculas? (1 = sim, 0 = não): ");
-    scanf("%d", &isCaseSensitive);
-
-    resultado = q3(texto, caractere, isCaseSensitive);
-
-    printf("\nO caractere '%c' aparece %d vezes no texto.\n", caractere, resultado);
-
-    return 0;
-}
-
 
 /*
  Q4 = encontrar palavra em texto
@@ -572,18 +487,6 @@ int q5(int num)
   if (negativo)
     invertido = -invertido;
   return invertido;
-}
-/*int main()
-{
-    int invertido, num, resultado;
-    printf ("Digite o número a ser invertido: \n");
-    scanf ("%d", &num);
-
-    printf("\n");
-    resultado = q5(num);
-    printf("Número invertido: %d\n", resultado);
-
-    return 0;
 }
 
 /*
