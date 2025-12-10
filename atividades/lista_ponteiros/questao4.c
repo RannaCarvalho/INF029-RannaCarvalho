@@ -4,10 +4,10 @@
 // Definição da estrutura do nó da pilha
 typedef struct pont {
     int valor;
-    struct pont* proximo;
-} pont;
-pont* insere(pont* topo, int valor) {
-    pont* novo = (pont*)malloc(sizeof(pont));
+    struct No* proximo;
+} No;
+No* insere(No* topo, int valor) {
+    No* novo = (pont*)malloc(sizeof(pont));
     
     if (novo != NULL) {
         novo->valor = valor;
