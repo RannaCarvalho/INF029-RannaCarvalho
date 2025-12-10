@@ -17,6 +17,34 @@ Rertono (int)
     SEM_ESPACO_DE_MEMORIA - Sem espaço de memória
     TAMANHO_INVALIDO - o tamanho deve ser maior ou igual a 1
 */
+#define SUCESSO 0
+#define JA_TEM_ESTRUTURA_AUXILIAR -1
+#define POSICAO_INVALIDA -2
+#define SEM_ESPACO_DE_MEMORIA -3
+#define TAMANHO_INVALIDO -4
+
+int* vetorPrincipal[10]; 
+
+int criarEstruturaAuxiliar(int posicao, int tamanho) {
+    if (posicao < 1 || posicao > 10) {
+        return POSICAO_INVALIDA;
+    }
+    if (vetorPrincipal[posicao - 1] != NULL) {
+        return JA_TEM_ESTRUTURA_AUXILIAR;
+    }
+    if (tamanho < 1) {
+        return TAMANHO_INVALIDO;
+    }
+
+    vetorPrincipal[posicao - 1] = (int*)malloc(tamanho * sizeof(int));
+
+    if (vetorPrincipal[posicao - 1] == NULL) {
+        return SEM_ESPACO_DE_MEMORIA;
+    }
+
+    return SUCESSO;
+}
+/*
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
 
