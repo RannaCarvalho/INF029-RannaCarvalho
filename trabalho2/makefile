@@ -2,7 +2,7 @@
 PROG = programa
 
 # Arquivos fonte
-SRC = trabalho2.c corretor2.c
+SRC = trabalho2.c mainTeste.c
 
 # Compilador
 CC = gcc
