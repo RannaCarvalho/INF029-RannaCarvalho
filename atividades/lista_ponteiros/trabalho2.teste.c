@@ -4,7 +4,13 @@
 
 #include "trabalho2.h"
 
-int vetorPrincipal[TAM];
+typedef struct {
+    int *vetorAux;
+    int qtd;
+    int tamanho;
+} Pont;
+
+Pont vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
