@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "trabalho2.h"
-
 #define TAM 10
 
-// Estrutura principal otimizada
+#include "trabalho2.h"
+
 typedef struct {
     int *vetorAux;
     int qtd;
@@ -22,7 +21,7 @@ int ehPosicaoValida(int posicao) {
 }
 
 int temEstruturaAuxiliar(int posicao) {
-    if (vetorPrincipal[posicao - 1].vetorAux != NULL)
+    if (ehPosicaoValida(posicao) && vetorPrincipal[posicao - 1].vetorAux != NULL)
         return 1;
     return 0;
 }
@@ -45,15 +44,14 @@ void ordenarVetor(int vetor[], int tamanho) {
 int criarEstruturaAuxiliar(int posicao, int tamanho) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (temEstruturaAuxiliar(posicao))
         return JA_TEM_ESTRUTURA_AUXILIAR;
-        
+
     if (tamanho < 1)
         return TAMANHO_INVALIDO;
 
     vetorPrincipal[posicao - 1].vetorAux = (int *)malloc(tamanho * sizeof(int));
-    
     if (vetorPrincipal[posicao - 1].vetorAux == NULL)
         return SEM_ESPACO_DE_MEMORIA;
 
@@ -66,12 +64,12 @@ int criarEstruturaAuxiliar(int posicao, int tamanho) {
 int inserirNumeroEmEstrutura(int posicao, int valor) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
 
     int indice = posicao - 1;
-    
+
     if (vetorPrincipal[indice].qtd >= vetorPrincipal[indice].tamanho)
         return SEM_ESPACO;
 
@@ -84,10 +82,10 @@ int inserirNumeroEmEstrutura(int posicao, int valor) {
 int excluirNumeroDoFinaldaEstrutura(int posicao) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
-        
+
     if (vetorPrincipal[posicao - 1].qtd == 0)
         return ESTRUTURA_AUXILIAR_VAZIA;
 
@@ -98,38 +96,41 @@ int excluirNumeroDoFinaldaEstrutura(int posicao) {
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
-        
+
     if (vetorPrincipal[posicao - 1].qtd == 0)
         return ESTRUTURA_AUXILIAR_VAZIA;
 
     int indice = posicao - 1;
     int i, j, encontrado = 0;
 
+    // Busca o valor
     for (i = 0; i < vetorPrincipal[indice].qtd; i++) {
         if (vetorPrincipal[indice].vetorAux[i] == valor) {
             encontrado = 1;
-            // Shift para esquerda
-            for (j = i; j < vetorPrincipal[indice].qtd - 1; j++) {
-                vetorPrincipal[indice].vetorAux[j] = vetorPrincipal[indice].vetorAux[j + 1];
-            }
-            vetorPrincipal[indice].qtd--;
-            break; 
+            break;
         }
     }
 
-    if (encontrado)
-        return SUCESSO;
-    else
+    if (!encontrado)
         return NUMERO_INEXISTENTE;
+
+    // Desloca os elementos para esquerda
+    for (j = i; j < vetorPrincipal[indice].qtd - 1; j++) {
+        vetorPrincipal[indice].vetorAux[j] = vetorPrincipal[indice].vetorAux[j + 1];
+    }
+    
+    vetorPrincipal[indice].qtd--;
+
+    return SUCESSO;
 }
 
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
 
@@ -142,10 +143,13 @@ int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
 }
 
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]) {
+    // Primeiro recuperamos os dados para o vetorAux
     int retorno = getDadosEstruturaAuxiliar(posicao, vetorAux);
     
+    // Se a recuperação foi SUCESSO, então ordenamos o vetorAux
     if (retorno == SUCESSO) {
-        ordenarVetor(vetorAux, vetorPrincipal[posicao - 1].qtd);
+        int indice = posicao - 1;
+        ordenarVetor(vetorAux, vetorPrincipal[indice].qtd);
     }
     
     return retorno;
@@ -189,7 +193,7 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]) {
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
 
@@ -207,7 +211,7 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho) {
     vetorPrincipal[indice].vetorAux = novoVetor;
     vetorPrincipal[indice].tamanho = tamanhoFinal;
 
-    // Se diminuiu o tamanho, ajusta a qtd para não exceder
+    // Se diminuiu o tamanho, ajusta a qtd para não estourar
     if (vetorPrincipal[indice].qtd > tamanhoFinal)
         vetorPrincipal[indice].qtd = tamanhoFinal;
 
@@ -217,10 +221,10 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho) {
 int getQuantidadeElementosEstruturaAuxiliar(int posicao) {
     if (!ehPosicaoValida(posicao))
         return POSICAO_INVALIDA;
-        
+
     if (!temEstruturaAuxiliar(posicao))
         return SEM_ESTRUTURA_AUXILIAR;
-        
+
     if (vetorPrincipal[posicao - 1].qtd == 0)
         return ESTRUTURA_AUXILIAR_VAZIA;
 
@@ -230,9 +234,8 @@ int getQuantidadeElementosEstruturaAuxiliar(int posicao) {
 // --- Funções de Lista Encadeada ---
 
 No *montarListaEncadeadaComCabecote() {
-    // Verifica se há elementos antes de alocar
     int haElementos = 0;
-    for(int i=0; i<TAM; i++){
+    for(int i = 0; i < TAM; i++){
         if(vetorPrincipal[i].vetorAux != NULL && vetorPrincipal[i].qtd > 0){
             haElementos = 1;
             break;
@@ -244,16 +247,14 @@ No *montarListaEncadeadaComCabecote() {
     if (head == NULL) return NULL;
     head->prox = NULL;
 
-    No *ultimo = head; // Ponteiro para inserir sempre no final (O(1))
+    No *ultimo = head; 
 
     for (int i = 0; i < TAM; i++) {
         if (vetorPrincipal[i].vetorAux != NULL && vetorPrincipal[i].qtd > 0) {
             for (int j = 0; j < vetorPrincipal[i].qtd; j++) {
                 No *novo = (No *)malloc(sizeof(No));
-                if (novo == NULL) {
-                    // Idealmente aqui deveria limpar a memória já alocada em caso de falha
-                    return NULL; 
-                }
+                if (novo == NULL) return NULL; 
+                
                 novo->conteudo = vetorPrincipal[i].vetorAux[j];
                 novo->prox = NULL;
                 
