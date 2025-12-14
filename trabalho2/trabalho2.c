@@ -9,9 +9,9 @@ typedef struct {
     int *vetorAux;
     int qtd;
     int tamanho;
-} Descritor;
+} Pont;
 
-Descritor vetorPrincipal[TAM];
+Pont vetorPrincipal[TAM];
 
 // --- Funções Auxiliares ---
 
